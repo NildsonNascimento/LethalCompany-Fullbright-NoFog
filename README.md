@@ -1,5 +1,4 @@
-```html
-<p align="center">
+ <p align="center">
   <img src="package/icon.png" width="160" alt="Nildo-Fullbright-Lite">
 </p>
 
@@ -50,7 +49,7 @@ cd NildoFullbrightLite
 dotnet build -c Release
 ```
 
-That's it! The package is generated at **`dist/Nildo_Fullbright_Lite-<version>.zip`**, ready to be imported into r2modman.
+The package is generated at **`dist/Nildo_Fullbright_Lite-<version>.zip`**, ready to be imported into r2modman.
 
 On Windows, you can also simply double-click `build.bat`.
 
@@ -112,4 +111,3 @@ Build with `dotnet build -c Release`. BepInEx is included in `lib/`, and the gam
 The r2modman-ready ZIP package is generated in `dist/`.
 
 </details>
-```
