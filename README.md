@@ -51,7 +51,9 @@ dotnet build -c Release
 
 The package is generated at **`dist/Nildo_Fullbright_Lite-<version>.zip`**, ready to be imported into r2modman.
 
+DONT FORGET TO PUT BepInEx.dll in lib folder to run.
 On Windows, you can also simply double-click `build.bat`.
+
 
 ### What If the Game Is Not Installed in the Default Location?
 
