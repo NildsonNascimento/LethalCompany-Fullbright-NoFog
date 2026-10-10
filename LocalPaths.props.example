@@ -1,0 +1,6 @@
+<Project>
+  <!-- Copie para LocalPaths.props (ignorado pelo git) e ajuste o caminho do seu jogo -->
+  <PropertyGroup>
+    <GameDir>D:\SteamLibrary\steamapps\common\Lethal Company</GameDir>
+  </PropertyGroup>
+</Project>

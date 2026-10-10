@@ -1,0 +1,63 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>NildoFullbrightLite</AssemblyName>
+    <RootNamespace>NildoFullbrightLite</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>none</DebugType>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+
+    <!-- Nome/versao do pacote zip gerado em dist/. Mantenha a versao igual a de src/Plugin.cs e package/manifest.json -->
+    <PackageName>Nildo_Fullbright_Lite</PackageName>
+    <PluginVersion>1.0.0</PluginVersion>
+  </PropertyGroup>
+
+  <!--
+    Caminho do jogo (so ele varia de PC para PC). Ordem de prioridade:
+      1. dotnet build -p:GameDir="D:\Jogos\Lethal Company"
+      2. arquivo LocalPaths.props na raiz (nao vai para o git) - veja LocalPaths.props.example
+      3. variavel de ambiente LETHAL_COMPANY_DIR
+      4. Steam instalada (lido do registro do Windows)
+      5. caminho padrao C:\Program Files (x86)\Steam\steamapps\common\Lethal Company
+  -->
+  <Import Project="LocalPaths.props" Condition="Exists('LocalPaths.props')" />
+
+  <PropertyGroup>
+    <GameDir Condition="'$(GameDir)' == ''">$(LETHAL_COMPANY_DIR)</GameDir>
+    <SteamPath Condition="'$(SteamPath)' == '' And '$(OS)' == 'Windows_NT'">$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Valve\Steam', 'InstallPath', null, RegistryView.Registry32))</SteamPath>
+    <GameDir Condition="'$(GameDir)' == '' And '$(SteamPath)' != '' And Exists('$(SteamPath)\steamapps\common\Lethal Company')">$(SteamPath)\steamapps\common\Lethal Company</GameDir>
+    <GameDir Condition="'$(GameDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\Lethal Company</GameDir>
+    <Managed>$(GameDir)\Lethal Company_Data\Managed</Managed>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- BepInEx vem junto do repositorio (lib/), entao nao depende do r2modman nem de caminho nenhum -->
+    <Reference Include="BepInEx"><HintPath>$(MSBuildThisFileDirectory)lib/BepInEx.dll</HintPath><Private>false</Private></Reference>
+
+    <!-- DLLs do jogo: lidos da instalacao local do Lethal Company -->
+    <Reference Include="$(Managed)\UnityEngine*.dll" Private="false" />
+    <Reference Include="$(Managed)\Unity.*.dll" Private="false" />
+    <Reference Include="$(Managed)\Assembly-CSharp.dll" Private="false" />
+    <Reference Include="UnityEngine.TextRenderingModule"><HintPath>$(Managed)\UnityEngine.TextRenderingModule.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+
+  <!-- Falha cedo, com mensagem clara, se a pasta do jogo nao foi encontrada -->
+  <Target Name="CheckGameDir" BeforeTargets="BeforeBuild;ResolveAssemblyReferences">
+    <Error Condition="!Exists('$(Managed)\Assembly-CSharp.dll')"
+           Text="Lethal Company nao encontrado em '$(GameDir)'. Informe a pasta do jogo: dotnet build -p:GameDir=&quot;D:\Caminho\Lethal Company&quot; (ou copie LocalPaths.props.example para LocalPaths.props e edite)." />
+  </Target>
+
+  <!-- Copia o dll para package/ e gera dist/<PackageName>-<versao>.zip pronto para importar no r2modman -->
+  <Target Name="CopyToPackage" AfterTargets="Build">
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(MSBuildProjectDirectory)/package/BepInEx/plugins" />
+    <MakeDir Directories="$(MSBuildProjectDirectory)/dist" />
+    <ZipDirectory SourceDirectory="$(MSBuildProjectDirectory)/package"
+                  DestinationFile="$(MSBuildProjectDirectory)/dist/$(PackageName)-$(PluginVersion).zip"
+                  Overwrite="true" />
+    <Message Importance="high" Text="Pacote gerado: dist/$(PackageName)-$(PluginVersion).zip" />
+  </Target>
+
+</Project>

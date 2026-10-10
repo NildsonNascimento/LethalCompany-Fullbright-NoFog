@@ -1,0 +1,8 @@
+bin/
+obj/
+dist/
+.vs/
+*.user
+LocalPaths.props
+# o .dll compilado vai nos Releases, nao no repositorio
+package/BepInEx/plugins/*.dll

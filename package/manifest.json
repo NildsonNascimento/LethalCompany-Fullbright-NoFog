@@ -1,0 +1,9 @@
+{
+	"name": "Nildo_Fullbright_Lite",
+	"version_number": "1.0.0",
+	"website_url": "",
+	"description": "Nildo-Fullbright-Lite: so Visao Noturna e Fog Remover para Lethal Company.",
+	"dependencies": [
+		"BepInEx-BepInExPack-5.4.2305"
+	]
+}
