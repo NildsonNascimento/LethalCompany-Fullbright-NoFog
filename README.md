@@ -39,7 +39,7 @@ This mod requires `BepInExPack`, which r2modman installs automatically.
 - [.NET SDK](https://dotnet.microsoft.com/download) 6.0 or later.
 - **Lethal Company** installed (the game's DLLs are loaded from your installation; they are not included in this repository).
 
-**BepInEx is already included in the repository** (`lib/BepInEx.dll`), so you do not need to point to the r2modman folder or have BepInEx installed to build the project.
+**BepInEx is not included in the repository** (`lib/BepInEx.dll`), so you do you need to point to the r2modman folder or have BepInEx installed to build the project.
 
 ### Step-by-Step
 
@@ -108,7 +108,7 @@ Lethal Company is the property of Zeekerss. This project is not affiliated with 
 
 A lightweight BepInEx 5 mod for Lethal Company featuring **Night Vision** (F7) and **Fog Remover** (F8), with a menu accessible via `Home`.
 
-Build with `dotnet build -c Release`. BepInEx is included in `lib/`, and the game directory is detected automatically. You can override the path using `-p:GameDir=...`, `LocalPaths.props`, or the `LETHAL_COMPANY_DIR` environment variable.
+Build with `dotnet build -c Release`. BepInEx is not included in `lib/`, and the game directory is detected automatically. You can override the path using `-p:GameDir=...`, `LocalPaths.props`, or the `LETHAL_COMPANY_DIR` environment variable.
 
 The r2modman-ready ZIP package is generated in `dist/`.
 
